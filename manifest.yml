@@ -1,3 +1,9 @@
-env:
-  JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
-  WELCOME_MESSAGE: Hello from Cloud Foundry
+---
+applications:
+  - name: pal-tracker
+    path: build/libs/pal-tracker.jar
+    routes:
+      - route: pal-tracker-piepline.test
+    env:
+      WELCOME_MESSAGE: Hello from the review environment
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
