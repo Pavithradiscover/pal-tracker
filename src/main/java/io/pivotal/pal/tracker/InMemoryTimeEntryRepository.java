@@ -6,8 +6,8 @@ import java.util.*;
 public class InMemoryTimeEntryRepository  implements  TimeEntryRepository{
 
 
-    Map<Long, TimeEntry> timeEntryMap  = new HashMap<Long, TimeEntry>();
-     long lid;
+    private final Map<Long, TimeEntry> timeEntryMap  = new HashMap<Long, TimeEntry>();
+    private long lid;
 
     @Override
     public TimeEntry find(Long id) {
@@ -16,22 +16,38 @@ public class InMemoryTimeEntryRepository  implements  TimeEntryRepository{
 
     @Override
     public TimeEntry create(TimeEntry timeEntry) {
-      //  timeEntryMap.clear();
         lid = ++lid;
-        timeEntry.setId(lid);
 
-        timeEntryMap.put(lid,timeEntry);
-        return timeEntry;
+        TimeEntry timeEntryCreated = new TimeEntry(
+                lid,
+                timeEntry.getProjectId(),
+                timeEntry.getUserId(),
+                timeEntry.getDate(),
+                timeEntry.getHours()
+        );
+
+        timeEntryMap.put(lid,timeEntryCreated);
+        return timeEntryCreated;
     }
 
     @Override
     public TimeEntry update(long id, TimeEntry timeEntry) {
 
-        if(timeEntryMap.containsKey(id)){
-            timeEntry.setId(id);
-            timeEntryMap.put(id, timeEntry);
-            return timeEntry;}
-        return null;
+        if (timeEntryMap.containsKey(id)) {
+            TimeEntry timeEntryUpdated = new TimeEntry(
+                    id,
+                    timeEntry.getProjectId(),
+                    timeEntry.getUserId(),
+                    timeEntry.getDate(),
+                    timeEntry.getHours()
+            );
+
+            timeEntryMap.put(id, timeEntryUpdated);
+
+            return timeEntryUpdated;
+        } else {
+            return null;
+        }
     }
 
     @Override
